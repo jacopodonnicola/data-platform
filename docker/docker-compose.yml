@@ -1,0 +1,46 @@
+services:
+  minio:
+    image: minio/minio
+    container_name: minio
+    ports:
+    # Access to the MinIO API
+      - "9000:9000"
+    # Access to the MinIO Console
+      - "9001:9001"
+    environment:
+      MINIO_ROOT_USER: minioadmin
+      MINIO_ROOT_PASSWORD: minioadmin
+    command: server /data --console-address ":9001"
+    volumes:
+    # Mount the local directory for MinIO data
+      - minio_data:/data
+
+  kestra:
+    image: kestra/kestra:latest
+    container_name: kestra
+    ports:
+    # Access to the Kestra Console
+      - "8080:8080"
+    command: server standalone
+    environment:
+      KESTRA_CONFIGURATION: |
+        kestra:
+          server:
+            type: embedded
+          queue:
+            type: memory
+          repository:
+            type: memory
+          storage:
+            type: local
+            local:
+              base-path: /app/storage
+    volumes:
+      # Mount the volume for Kestra data storage
+      - kestra_data:/app/storage
+      # Mount the bind mount for Kestra flows
+      - ./flows:/app/flows
+
+volumes:
+  minio_data:
+  kestra_data:
