@@ -11,3 +11,7 @@ __pycache__/
 
 # Dati di staging - non committare i dati raw o elaborati, solo il codice
 staging/
+
+# File di sistema e altri file da ignorare
+.DS_Store
+**/.DS_Store
