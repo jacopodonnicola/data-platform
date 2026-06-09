@@ -8,3 +8,6 @@ __pycache__/
 
 # Virtual environment
 .venv/
+
+# Dati di staging - non committare i dati raw o elaborati, solo il codice
+staging/
