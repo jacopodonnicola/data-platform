@@ -1,0 +1,3 @@
+# __init__.py rende la cartella "extractors" un package Python, permettendo di importare i moduli al suo interno. 
+# In questo caso, non è necessario aggiungere codice specifico all'interno di __init__.py, ma è importante che il file esista per riconoscere la cartella come un package.
+# I moduli all'interno della cartella "extractors" possono essere importati in altri file del progetto utilizzando la sintassi "from extractors import nome_modulo".

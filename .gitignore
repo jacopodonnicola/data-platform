@@ -15,3 +15,6 @@ staging/
 # File di sistema e altri file da ignorare
 .DS_Store
 **/.DS_Store
+
+# File di documentazione e appunti personali
+notes.md
