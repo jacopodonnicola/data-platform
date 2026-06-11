@@ -12,7 +12,7 @@ services:
       MINIO_ROOT_PASSWORD: minioadmin
     command: server /data --console-address ":9001"
     volumes:
-    # Mount the local directory for MinIO data
+    # Mount the volume for MinIO data storage
       - minio_data:/data
 
   kestra:
