@@ -22,9 +22,9 @@ def save_parquet(client: Minio, bucket: str, object_path: str, df: pd.DataFrame)
     buffer.seek(0) # Riporta il puntatore del buffer all'inizio, altrimenti MinIO penserebbe che il buffer sia vuoto (perché è alla fine dopo la scrittura) e caricherebbe un file vuoto.
 
     client.put_object(  # Carica il buffer su MinIO come un oggetto. put_object è un metodo del client MinIO che accetta il nome del bucket, il percorso dell'oggetto, i dati da caricare, la lunghezza dei dati e il tipo di contenuto.
-        bucket_name=bucket, 
-        object_name=object_path,
-        data=buffer,
+        bucket_name=bucket, # Il nome del bucket su MinIO dove vogliamo salvare il file Parquet.
+        object_name=object_path, # Il percorso completo dell'oggetto su MinIO, che include il prefisso e il nome del file. Ad esempio, "prices/AAPL.parquet".
+        data=buffer, # I dati da caricare, che in questo caso sono nel buffer in memoria. 
         length=buffer.getbuffer().nbytes, # Ottiene la lunghezza dei dati nel buffer. getbuffer() restituisce un oggetto memoryview che rappresenta il buffer, e nbytes restituisce la dimensione in byte del buffer.
         content_type="application/octet-stream" # Il tipo di contenuto è generico perché Parquet è un formato binario. In alternativa, potremmo usare "application/parquet" se vogliamo essere più specifici, ma "application/octet-stream" è ampiamente accettato per i file binari.
     )
