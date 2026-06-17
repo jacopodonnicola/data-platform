@@ -18,3 +18,10 @@ staging/
 
 # File di documentazione e appunti personali
 notes.md
+
+# File per tracciare statistiche di utilizzo di dbt
+.user.yml
+
+# File di database DuckDB
+*.duckdb
+warehouse/*.duckb

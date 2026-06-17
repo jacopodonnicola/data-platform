@@ -1,3 +1,4 @@
+# Questo file dice a dbt come connettersi a DuckDB.
 data_platform:
   target: dev
   outputs:
