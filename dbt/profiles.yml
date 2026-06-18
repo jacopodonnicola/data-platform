@@ -1,8 +1,16 @@
 # Questo file dice a dbt come connettersi a DuckDB.
-data_platform:
-  target: dev
-  outputs:
-    dev:
-      type: duckdb
-      path: "{{ env_var('DUCKDB_PATH') }}"
-      threads: 4
+data_platform: # Il nome del nostro data platform, che può essere qualsiasi cosa.
+  target: dev # Il nome del nostro target di connessione, che può essere qualsiasi cosa.
+  outputs: # La sezione outputs contiene le configurazioni per ogni target di connessione.
+    dev: # Il nome del target di connessione, che deve corrispondere al target specificato sopra.
+      type: duckdb # Il tipo di connessione, che in questo caso è duckdb.
+      path: "{{ env_var('DUCKDB_PATH') }}"  # Il percorso del file DuckDB, che viene preso da una variabile d'ambiente.
+      threads: 4 # Il numero di thread da utilizzare per le query, che può essere qualsiasi numero a seconda delle tue esigenze.
+      extensions: # Le estensioni da caricare, in questo caso stiamo caricando l'estensione httpfs per poter accedere a S3.
+        - httpfs # L'estensione httpfs permette a DuckDB di accedere a file su S3, che è necessario per il nostro caso d'uso.
+      settings: # Le impostazioni specifiche per l'estensione httpfs, che sono necessarie per configurare l'accesso a S3.
+        s3_endpoint: "{{ env_var('MINIO_ENDPOINT') }}" # L'endpoint di S3, che viene preso da una variabile d'ambiente.
+        s3_access_key_id: "{{ env_var('MINIO_ACCESS_KEY') }}" # La chiave di accesso di S3, che viene presa da una variabile d'ambiente.
+        s3_secret_access_key: "{{ env_var('MINIO_SECRET_KEY') }}" # La chiave segreta di accesso di S3, che viene presa da una variabile d'ambiente.
+        s3_use_ssl: false # Indica se utilizzare SSL per la connessione a S3, che in questo caso è impostato su false perché stiamo utilizzando MinIO in locale.
+        s3_url_style: path # Lo stile dell'URL per S3, che in questo caso è impostato su path perché MinIO utilizza questo stile per accedere ai bucket.

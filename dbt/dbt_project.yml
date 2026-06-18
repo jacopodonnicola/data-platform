@@ -13,7 +13,3 @@ snapshot-paths: ["snapshots"]
 clean-targets:    
   - "target"
   - "dbt_packages"
-
-# Aggiunta: esegue la macro setup_minio prima di ogni run/test
-on-run-start:
-  - "{{ setup_minio() }}"
