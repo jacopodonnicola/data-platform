@@ -1,9 +1,9 @@
 name: 'data_platform'
 version: '1.0.0'
-profile: 'data_platform'
+profile: 'data_platform' # This should match the profile name in your profiles.yml file
 
 
-model-paths: ["models"]
+model-paths: ["models"] # 
 analysis-paths: ["analyses"]
 test-paths: ["tests"]
 seed-paths: ["seeds"]
@@ -13,3 +13,10 @@ snapshot-paths: ["snapshots"]
 clean-targets:    
   - "target"
   - "dbt_packages"
+
+
+models:
+  data_platform:
+    staging:
+      +materialized: table
+

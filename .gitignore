@@ -24,4 +24,7 @@ notes.md
 
 # File di database DuckDB
 *.duckdb
-warehouse/*.duckb
+warehouse/*.duckdb
+
+# File di log
+logs/
