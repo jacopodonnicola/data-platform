@@ -1,0 +1,19 @@
+version: 2
+
+models:
+  - name: dim_company
+    description: "Una riga per ticker, con metadati aziendali e metriche derivate"
+    columns:
+      - name: ticker
+        description: "Simbolo del titolo, chiave primaria"
+        tests:
+          - unique
+          - not_null
+
+      - name: name
+        description: "Nome dell'azienda"
+        tests:
+          - not_null
+
+      - name: sector
+        description: "Settore di appartenenza"
