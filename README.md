@@ -70,7 +70,7 @@ uv run python main.py
 
 ## Roadmap
 - [x] Ingestion pipeline (Alpha Vantage → MinIO)
-- [ ] DuckDB + dbt (trasformazioni e data mart)
+- [x] DuckDB + dbt (trasformazioni e data mart)
 - [ ] Kestra (orchestrazione completa)
 - [ ] Metabase (dashboard)
 - [ ] CI/CD con GitHub Actions

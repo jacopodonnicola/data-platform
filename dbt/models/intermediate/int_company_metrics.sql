@@ -9,12 +9,12 @@ SELECT
     o.eps,
     e.last_reported_eps,
     e.avg_surprise_percentage
-FROM stg_overview o
+FROM  {{ ref('stg_overview') }} o
 LEFT JOIN (
     SELECT
         ticker,
         FIRST(reported_eps ORDER BY fiscal_date_ending DESC) AS last_reported_eps,
         AVG(surprise_percentage) AS avg_surprise_percentage
-    FROM stg_earnings
+    FROM  {{ ref('stg_earnings') }}
     GROUP BY ticker
 ) e ON o.ticker = e.ticker

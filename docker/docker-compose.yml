@@ -18,6 +18,7 @@ services:
   kestra:
     image: kestra/kestra:latest
     container_name: kestra
+    user: root
     ports:
     # Access to the Kestra Console
       - "8080:8080"
@@ -35,11 +36,19 @@ services:
             type: local
             local:
               base-path: /app/storage
+      ENV_ALPHA_VANTAGE_API_KEY: "${ALPHA_VANTAGE_API_KEY}"
+      ENV_MINIO_ACCESS_KEY: "${MINIO_ACCESS_KEY}"
+      ENV_MINIO_SECRET_KEY: "${MINIO_SECRET_KEY}"  
+      ENV_PROJECT_PATH: "${PROJECT_PATH}"
+    env_file:
+      - ../.env
     volumes:
       # Mount the volume for Kestra data storage
       - kestra_data:/app/storage
       # Mount the bind mount for Kestra flows
       - ./flows:/app/flows
+      # Mount the Docker socket to allow Kestra to interact with Docker
+      - /var/run/docker.sock:/var/run/docker.sock 
 
 volumes:
   minio_data:
