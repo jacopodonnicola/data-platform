@@ -61,6 +61,19 @@ services:
       # Mount the Docker socket to allow Kestra to interact with Docker
       - /var/run/docker.sock:/var/run/docker.sock 
 
+  superset:
+    image: superset-custom:latest
+    container_name: superset
+    ports:
+      - "8088:8088"
+    volumes:
+      - superset_data:/app/superset_home
+      - /Users/jacodon/Dev/data-platform/warehouse:/warehouse
+    environment:
+        SUPERSET_SECRET_KEY: "${SUPERSET_SECRET_KEY}"
+    restart: unless-stopped
+
 volumes:
   minio_data:
   kestra_data:
+  superset_data:

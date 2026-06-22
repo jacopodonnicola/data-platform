@@ -68,6 +68,18 @@ cd ingestion
 uv run python main.py
 ```
 
+## Build delle immagini custom
+
+Da eseguire una volta, o ogni volta che si modifica il codice:
+
+```bash
+# immagine pipeline di ingestion + dbt
+docker build -f docker/Dockerfile -t data-platform:latest .
+
+# immagine Superset con driver DuckDB
+docker build -f docker/Dockerfile.superset -t superset-custom:latest .
+```
+
 ## Avvio dell'infrastruttura
 
 ```bash
@@ -95,5 +107,5 @@ curl -X POST \
 - [x] Ingestion pipeline (Alpha Vantage → MinIO)
 - [x] DuckDB + dbt (trasformazioni e data mart)
 - [x] Kestra (orchestrazione completa)
-- [ ] Metabase (dashboard)
+- [ ] Superstor (dashboard)
 - [ ] CI/CD con GitHub Actions
