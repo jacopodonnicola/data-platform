@@ -1,7 +1,7 @@
 FROM apache/superset:latest
 
 USER root
-RUN pip install duckdb-engine
+RUN pip install duckdb-engine --target /app/.venv/lib/python3.10/site-packages/
 COPY docker/superset_init.sh /superset_init.sh
 RUN chmod +x /superset_init.sh
 
