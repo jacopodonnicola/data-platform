@@ -1,31 +1,34 @@
 id: data_platform_pipeline
 namespace: data_platform
 
+triggers:
+  - id: daily_schedule
+    type: io.kestra.plugin.core.trigger.Schedule
+    cron: "40 10 * * *"
+    timezone: "Europe/Rome"
+
 tasks:
-
-  - id: debug_envs
-    type: io.kestra.plugin.core.debug.Return
-    format: "{{ envs }}"
-
-  # - id: run_ingestion
-  #  type: io.kestra.plugin.docker.Run
-  #  containerImage: data-platform:latest
-  #  networkMode: docker_default
-  #  commands:
-  #    - python
-  #    - /app/ingestion/main.py
-  #  env:
-  #    ALPHA_VANTAGE_API_KEY: "{{ envs.alpha_vantage_api_key }}"
-  #    MINIO_ENDPOINT: "minio:9000"
-  #    MINIO_ACCESS_KEY: "{{ envs.minio_access_key }}"
-  #    MINIO_SECRET_KEY: "{{ envs.minio_secret_key }}"
+  - id: run_ingestion
+    type: io.kestra.plugin.docker.Run
+    containerImage: data-platform:latest
+    networkMode: docker_default
+    volumes:
+      - "{{ envs.project_path }}/warehouse:/app/warehouse"
+    commands:
+      - python
+      - /app/ingestion/main.py
+    env:
+      ALPHA_VANTAGE_API_KEY: "{{ envs.alpha_vantage_api_key }}"
+      MINIO_ENDPOINT: "minio:9000"
+      MINIO_ACCESS_KEY: "{{ envs.minio_access_key }}"
+      MINIO_SECRET_KEY: "{{ envs.minio_secret_key }}"
 
   - id: run_dbt
     type: io.kestra.plugin.docker.Run
     containerImage: data-platform:latest
     networkMode: docker_default
     volumes:
-    - "{{ envs.project_path }}/warehouse:/app/warehouse"
+      - "{{ envs.project_path }}/warehouse:/app/warehouse"
     commands:
       - dbt
       - run
@@ -44,7 +47,7 @@ tasks:
     containerImage: data-platform:latest
     networkMode: docker_default
     volumes:
-    - "{{ envs.project_path }}/warehouse:/app/warehouse"
+      - "{{ envs.project_path }}/warehouse:/app/warehouse"
     commands:
       - dbt
       - test
@@ -54,4 +57,6 @@ tasks:
       - /app/dbt
     env:
       DUCKDB_PATH: "/app/warehouse/warehouse.duckdb"
-      
+      MINIO_ENDPOINT: "minio:9000"
+      MINIO_ACCESS_KEY: "{{ envs.minio_access_key }}"
+      MINIO_SECRET_KEY: "{{ envs.minio_secret_key }}"

@@ -36,6 +36,11 @@ services:
             type: local
             local:
               base-path: /app/storage
+          plugins:
+            configurations:
+              - type: io.kestra.plugin.scripts.runner.docker.Docker
+                values:
+                  volume-enabled: true
       ENV_ALPHA_VANTAGE_API_KEY: "${ALPHA_VANTAGE_API_KEY}"
       ENV_MINIO_ACCESS_KEY: "${MINIO_ACCESS_KEY}"
       ENV_MINIO_SECRET_KEY: "${MINIO_SECRET_KEY}"  
