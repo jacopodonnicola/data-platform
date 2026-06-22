@@ -1,4 +1,4 @@
-id: data_platform_pipeline
+id: pipeline
 namespace: data_platform
 
 triggers:

@@ -68,9 +68,32 @@ cd ingestion
 uv run python main.py
 ```
 
+## Avvio dell'infrastruttura
+
+```bash
+cd docker
+docker compose up -d
+```
+
+### Importare il flow in Kestra
+
+Dopo ogni riavvio di Kestra, importare manualmente il flow tramite API:
+
+```bash
+curl -X POST \
+  -u "tuaemail@kestra.dev:tuapassword" \
+  -H "Content-Type: application/x-yaml" \
+  --data-binary @docker/flows/data_platform_pipeline.yml \
+  "http://localhost:8080/api/v1/main/flows"
+```
+
+> **Nota:** Kestra usa `repository: type: memory` — i flow non persistono tra riavvii.
+> Questo è un workaround temporaneo; in futuro si passerà a PostgreSQL come repository persistente.
+
+
 ## Roadmap
 - [x] Ingestion pipeline (Alpha Vantage → MinIO)
 - [x] DuckDB + dbt (trasformazioni e data mart)
-- [ ] Kestra (orchestrazione completa)
+- [x] Kestra (orchestrazione completa)
 - [ ] Metabase (dashboard)
 - [ ] CI/CD con GitHub Actions

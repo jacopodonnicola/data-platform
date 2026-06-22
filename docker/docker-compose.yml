@@ -25,6 +25,12 @@ services:
     command: server standalone
     environment:
       KESTRA_CONFIGURATION: |
+        micronaut:
+          io:
+            watch:
+              enabled: true
+              paths:
+                - /app/flows
         kestra:
           server:
             type: embedded
