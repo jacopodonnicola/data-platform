@@ -74,7 +74,7 @@ Da eseguire una volta, o ogni volta che si modifica il codice:
 
 ```bash
 # immagine pipeline di ingestion + dbt
-docker build -f docker/Dockerfile -t data-platform:latest .
+docker build -f docker/Dockerfile.pipeline -t pipeline:latest .
 
 # immagine Superset con driver DuckDB
 docker build -f docker/Dockerfile.superset -t superset-custom:latest .
@@ -104,8 +104,17 @@ curl -X POST \
 
 
 ## Roadmap
+
+### Completato
 - [x] Ingestion pipeline (Alpha Vantage → MinIO)
 - [x] DuckDB + dbt (trasformazioni e data mart)
-- [x] Kestra (orchestrazione completa)
-- [ ] Superstor (dashboard)
-- [ ] CI/CD con GitHub Actions
+- [x] Kestra (orchestrazione completa con scheduling)
+- [x] Superset (dashboard)
+
+### Evoluzioni future
+- [ ] Architettura medallion completa — separare ingestion (JSON → raw/) e trasformazione (raw/ → staging/) in due fasi distinte in `main.py`
+- [ ] PostgreSQL come repository persistente per Kestra (attualmente `memory`)
+- [ ] CI/CD con GitHub Actions (lint, test, validazione dbt su PR)
+- [ ] Git flow con branch feature per nuove funzionalità
+- [ ] Superset Reports — invio schedulato dashboard via email (richiede Redis + Celery)
+- [ ] Gestione rate limiting Alpha Vantage più robusta (backoff esponenziale, retry automatico)

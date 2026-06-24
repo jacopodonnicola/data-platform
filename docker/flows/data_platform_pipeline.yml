@@ -10,7 +10,7 @@ triggers:
 tasks:
   - id: run_ingestion
     type: io.kestra.plugin.docker.Run
-    containerImage: data-platform:latest
+    containerImage: pipeline:latest
     networkMode: docker_default
     volumes:
       - "{{ envs.project_path }}/warehouse:/app/warehouse"
@@ -25,7 +25,7 @@ tasks:
 
   - id: run_dbt
     type: io.kestra.plugin.docker.Run
-    containerImage: data-platform:latest
+    containerImage: pipeline:latest
     networkMode: docker_default
     volumes:
       - "{{ envs.project_path }}/warehouse:/app/warehouse"
@@ -44,7 +44,7 @@ tasks:
 
   - id: run_dbt_test
     type: io.kestra.plugin.docker.Run
-    containerImage: data-platform:latest
+    containerImage: pipeline:latest
     networkMode: docker_default
     volumes:
       - "{{ envs.project_path }}/warehouse:/app/warehouse"

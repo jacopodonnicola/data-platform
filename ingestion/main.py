@@ -39,7 +39,7 @@ def main():
         raw_prices = extract_prices(ticker, config.API_KEY, config.BASE_URL)
         if is_valid_response(raw_prices, "Time Series (Daily)"):
             df_prices = transform_prices(raw_prices, ticker)
-        save_parquet(client, config.BUCKET_STAGING, f"{config.PREFIX_PRICES}/{ticker}_prices.parquet", df_prices)
+            save_parquet(client, config.BUCKET_STAGING, f"{config.PREFIX_PRICES}/{ticker}_prices.parquet", df_prices)
         time.sleep(2)  # aspetta 2 secondi
 
 
