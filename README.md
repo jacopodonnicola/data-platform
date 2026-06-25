@@ -118,3 +118,51 @@ curl -X POST \
 - [ ] Git flow con branch feature per nuove funzionalità
 - [ ] Superset Reports — invio schedulato dashboard via email (richiede Redis + Celery)
 - [ ] Gestione rate limiting Alpha Vantage più robusta (backoff esponenziale, retry automatico)
+
+
+# Architettura Target v2
+
+## Obiettivo
+Stock screening su universo allargato di ticker con pipeline giornaliera incrementale.
+
+## Sorgenti dati
+- **IB Gateway** — lista giornaliera ticker con filtri base (currency, volume, exchange)
+- **Yahoo Finance o equivalente** — storico OHLCV giornaliero per i ticker selezionati
+  - requisito: supporto ingestion ~70k record/giorno (7k ticker × 10 giorni overlap)
+
+## Strategia di ingestion
+- **Precarico iniziale** — caricamento manuale su MinIO dello storico 1-2 anni per tutti i ticker
+- **Run giornaliero incrementale** — ultimi 10 giorni per ogni ticker (overlap intenzionale per resilienza)
+- **Cleanup periodico** — eliminazione partizioni MinIO più vecchie di 2 anni (task Kestra)
+
+## Architettura Medallion
+raw/
+├── ib_screener/date=YYYY-MM-DD/ ← lista ticker giornaliera da IB
+└── prices/date=YYYY-MM-DD/ ← OHLCV grezzo per tutti i ticker
+
+staging/
+├── stg_screener/ ← ticker list pulita
+└── stg_prices/ ← OHLCV Parquet partizionato per data
+
+warehouse/ (DuckDB)
+├── staging/
+├── intermediate/
+│ ├── int_active_tickers ← join screener + prices
+│ └── int_price_metrics ← rendimenti, volatilità, medie mobili
+└── marts/
+├── fact_daily_prices ← finestra mobile 1 anno, tutti i ticker attivi
+├── dim_ticker ← anagrafica ticker con metadati IB
+└── fact_screening ← output screening giornaliero (~50 ticker)
+
+
+## Finestra dati
+- MinIO: 2 anni (gestito da cleanup periodico)
+- DuckDB warehouse: 1 anno (filtro in dbt)
+- Superset dashboard: ~50 ticker selezionati dallo screening
+
+## Note
+- Batch download per ottimizzare le chiamate API (es. yfinance supporta download multi-ticker)
+- Parallelismo nei task Kestra per gestire il volume giornaliero
+- Repo attuale come base — stessa struttura, sorgenti e volumi diversi
+Commit finale e chiudiamo?
+
