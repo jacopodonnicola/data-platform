@@ -1,0 +1,55 @@
+name: CI
+
+on:
+  pull_request:
+    branches:
+      - main
+
+jobs:
+  lint-and-test:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+
+      - name: Install uv
+        run: pip install uv
+
+      - name: Install dependencies
+        run: uv sync --frozen
+
+      - name: Lint with ruff
+        run: uv run ruff check ingestion/
+
+      - name: Generate test fixtures
+        run: uv run python tests/fixtures/generate_fixtures.py
+
+      - name: Run dbt models
+        run: |
+          uv run dbt run \
+            --project-dir dbt \
+            --profiles-dir dbt \
+            --target ci
+        env:
+          DUCKDB_PATH: /tmp/test_warehouse.duckdb
+          PRICES_PATH: tests/fixtures/prices.parquet
+          OVERVIEW_PATH: tests/fixtures/overview.parquet
+          EARNINGS_PATH: tests/fixtures/earnings.parquet
+
+      - name: Run dbt tests
+        run: |
+          uv run dbt test \
+            --project-dir dbt \
+            --profiles-dir dbt \
+            --target ci
+        env:
+          DUCKDB_PATH: /tmp/test_warehouse.duckdb
+          PRICES_PATH: tests/fixtures/prices.parquet
+          OVERVIEW_PATH: tests/fixtures/overview.parquet
+          EARNINGS_PATH: tests/fixtures/earnings.parquet

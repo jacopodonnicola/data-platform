@@ -7,4 +7,4 @@ SELECT
     "surprise" AS surprise,
     "surprisePercentage" AS surprise_percentage,
     "reportTime" AS report_time
-FROM read_parquet('s3://staging/earnings/*.parquet')
+FROM read_parquet('{{ env_var("EARNINGS_PATH", "s3://staging/earnings/*.parquet") }}')

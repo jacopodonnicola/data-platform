@@ -6,4 +6,4 @@ SELECT
     low,
     close,
     volume
-FROM read_parquet('s3://staging/prices/*.parquet')
+FROM read_parquet('{{ env_var("PRICES_PATH", "s3://staging/prices/*.parquet") }}')
