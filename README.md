@@ -166,3 +166,4 @@ warehouse/ (DuckDB)
 - Repo attuale come base — stessa struttura, sorgenti e volumi diversi
 Commit finale e chiudiamo?
 
+test

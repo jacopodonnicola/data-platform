@@ -16,4 +16,4 @@ SELECT
     "52WeekLow" AS week_52_low,
     "DividendYield" AS dividend_yield,
     "ProfitMargin" AS profit_margin
-FROM read_parquet('s3://staging/overview/*.parquet')
+FROM read_parquet('{{ env_var("OVERVIEW_PATH", "s3://staging/overview/*.parquet") }}')

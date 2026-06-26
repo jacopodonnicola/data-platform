@@ -14,3 +14,7 @@ data_platform: # Il nome del nostro data platform, che può essere qualsiasi cos
         s3_secret_access_key: "{{ env_var('MINIO_SECRET_KEY') }}" # La chiave segreta di accesso di S3, che viene presa da una variabile d'ambiente.
         s3_use_ssl: false # Indica se utilizzare SSL per la connessione a S3, che in questo caso è impostato su false perché stiamo utilizzando MinIO in locale.
         s3_url_style: path # Lo stile dell'URL per S3, che in questo caso è impostato su path perché MinIO utilizza questo stile per accedere ai bucket.
+    ci:
+      type: duckdb
+      path: "{{ env_var('DUCKDB_PATH') }}"
+      threads: 4        

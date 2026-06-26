@@ -28,3 +28,6 @@ warehouse/*.duckdb
 
 # File di log
 logs/
+
+# File di test e dati di test
+tests/fixtures/*.parquet
