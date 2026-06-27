@@ -112,8 +112,8 @@ curl -X POST \
 - [x] Superset (dashboard)
 
 ### Evoluzioni future
-- [ ] Architettura medallion completa — separare ingestion (JSON → raw/) e trasformazione (raw/ → staging/) in due fasi distinte in `main.py`
-- [ ] PostgreSQL come repository persistente per Kestra (attualmente `memory`)
+- [x] Architettura medallion completa — separare ingestion (JSON → raw/) e trasformazione (raw/ → staging/) in due fasi distinte in `main.py`
+- [x] Caricamento automatico dei flow di Kestra all’avvio
 - [x] CI/CD con GitHub Actions (lint, test, validazione dbt su PR)
 - [x] Git flow con branch feature per nuove funzionalità
 - [ ] Superset Reports — invio schedulato dashboard via email (richiede Redis + Celery)

@@ -22,7 +22,7 @@ services:
     ports:
     # Access to the Kestra Console
       - "8080:8080"
-    command: server standalone
+    command: server standalone --flow-path /app/flows
     environment:
       KESTRA_CONFIGURATION: |
         micronaut:
@@ -32,6 +32,8 @@ services:
               paths:
                 - /app/flows
         kestra:
+          tutorial-flows:
+            enabled: false
           server:
             type: embedded
           queue:
