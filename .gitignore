@@ -16,8 +16,8 @@ ingestion/staging/
 .DS_Store
 **/.DS_Store
 
-# File di documentazione e appunti personali
-notes.md
+# File di contesto e appunti personali
+data_platform_summary.md
 
 # File per tracciare statistiche di utilizzo di dbt
 .user.yml
