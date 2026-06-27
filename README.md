@@ -114,7 +114,7 @@ curl -X POST \
 ### Evoluzioni future
 - [ ] Architettura medallion completa — separare ingestion (JSON → raw/) e trasformazione (raw/ → staging/) in due fasi distinte in `main.py`
 - [ ] PostgreSQL come repository persistente per Kestra (attualmente `memory`)
-- [ ] CI/CD con GitHub Actions (lint, test, validazione dbt su PR)
+- [x] CI/CD con GitHub Actions (lint, test, validazione dbt su PR)
 - [ ] Git flow con branch feature per nuove funzionalità
 - [ ] Superset Reports — invio schedulato dashboard via email (richiede Redis + Celery)
 - [ ] Gestione rate limiting Alpha Vantage più robusta (backoff esponenziale, retry automatico)
