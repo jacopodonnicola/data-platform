@@ -116,8 +116,7 @@ curl -X POST \
 - [x] Caricamento automatico dei flow di Kestra all’avvio
 - [x] CI/CD con GitHub Actions (lint, test, validazione dbt su PR)
 - [x] Git flow con branch feature per nuove funzionalità
-- [ ] Superset Reports — invio schedulato dashboard via email (richiede Redis + Celery)
-
+- [x] PostgreSQL come repository persistente per Kestra (attualmente `memory`)
 
 # Architettura Target v2
 
@@ -163,4 +162,5 @@ warehouse/ (DuckDB)
 - Batch download per ottimizzare le chiamate API (es. yfinance supporta download multi-ticker)
 - Parallelismo nei task Kestra per gestire il volume giornaliero
 - Repo attuale come base — stessa struttura, sorgenti e volumi diversi
+- Superset Reports — invio schedulato dashboard via email (richiede Redis + Celery)
 Commit finale e chiudiamo?
