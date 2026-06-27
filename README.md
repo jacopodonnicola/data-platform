@@ -115,9 +115,8 @@ curl -X POST \
 - [ ] Architettura medallion completa — separare ingestion (JSON → raw/) e trasformazione (raw/ → staging/) in due fasi distinte in `main.py`
 - [ ] PostgreSQL come repository persistente per Kestra (attualmente `memory`)
 - [x] CI/CD con GitHub Actions (lint, test, validazione dbt su PR)
-- [ ] Git flow con branch feature per nuove funzionalità
+- [x] Git flow con branch feature per nuove funzionalità
 - [ ] Superset Reports — invio schedulato dashboard via email (richiede Redis + Celery)
-- [ ] Gestione rate limiting Alpha Vantage più robusta (backoff esponenziale, retry automatico)
 
 
 # Architettura Target v2
@@ -128,7 +127,7 @@ Stock screening su universo allargato di ticker con pipeline giornaliera increme
 ## Sorgenti dati
 - **IB Gateway** — lista giornaliera ticker con filtri base (currency, volume, exchange)
 - **Yahoo Finance o equivalente** — storico OHLCV giornaliero per i ticker selezionati
-  - requisito: supporto ingestion ~70k record/giorno (7k ticker × 10 giorni overlap)
+- requisito: supporto ingestion ~70k record/giorno (7k ticker × 10 giorni overlap)
 
 ## Strategia di ingestion
 - **Precarico iniziale** — caricamento manuale su MinIO dello storico 1-2 anni per tutti i ticker
@@ -165,5 +164,3 @@ warehouse/ (DuckDB)
 - Parallelismo nei task Kestra per gestire il volume giornaliero
 - Repo attuale come base — stessa struttura, sorgenti e volumi diversi
 Commit finale e chiudiamo?
-
-test
