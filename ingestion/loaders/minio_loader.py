@@ -1,4 +1,5 @@
 import io # per gestire i buffer in memoria
+import json
 import pandas as pd 
 from minio import Minio # libreria ufficiale per interagire con MinIO, compatibile anche con AWS S3
 
@@ -12,6 +13,21 @@ def get_minio_client(endpoint: str, access_key: str, secret_key: str, secure: bo
         secret_key=secret_key,
         secure=secure
     )
+
+
+def save_json(client: Minio, bucket: str, object_path: str, data: dict) -> None:
+    """
+    Salva un dizionario come JSON su MinIO (layer raw/).
+    """
+    buffer = io.BytesIO(json.dumps(data).encode("utf-8"))
+    client.put_object(
+        bucket_name=bucket,
+        object_name=object_path,
+        data=buffer,
+        length=buffer.getbuffer().nbytes,
+        content_type="application/json"
+    )
+    
 
 def save_parquet(client: Minio, bucket: str, object_path: str, df: pd.DataFrame) -> None:
     """

@@ -7,7 +7,7 @@ from extractors.earnings import extract_earnings
 from transformers.prices import transform_prices
 from transformers.overview import transform_overview
 from transformers.earnings import transform_earnings
-from loaders.minio_loader import get_minio_client, save_parquet
+from loaders.minio_loader import get_minio_client, save_json, save_parquet
 
 def is_valid_response(data: dict, expected_key: str) -> bool:
     """
@@ -32,12 +32,20 @@ def main():
         secure=config.MINIO_SECURE
     )
 
+# crea i bucket se non esistono
+    for bucket in [config.BUCKET_RAW, config.BUCKET_STAGING]:
+        if not client.bucket_exists(bucket):
+            client.make_bucket(bucket)
+            print(f"✅ Bucket '{bucket}' creato")
+
+
     for ticker in config.TICKERS:
         print(f"Processing {ticker}...")
 
         # prices
         raw_prices = extract_prices(ticker, config.API_KEY, config.BASE_URL)
         if is_valid_response(raw_prices, "Time Series (Daily)"):
+            save_json(client, config.BUCKET_RAW, f"{config.PREFIX_PRICES}/{ticker}_prices.json", raw_prices)
             df_prices = transform_prices(raw_prices, ticker)
             save_parquet(client, config.BUCKET_STAGING, f"{config.PREFIX_PRICES}/{ticker}_prices.parquet", df_prices)
         time.sleep(2)  # aspetta 2 secondi
@@ -46,6 +54,7 @@ def main():
         # overview
         raw_overview = extract_overview(ticker, config.API_KEY, config.BASE_URL)
         if is_valid_response(raw_overview, "Symbol"):
+            save_json(client, config.BUCKET_RAW, f"{config.PREFIX_OVERVIEW}/{ticker}_overview.json", raw_overview)
             df_overview = transform_overview(raw_overview, ticker)
             save_parquet(client, config.BUCKET_STAGING, f"{config.PREFIX_OVERVIEW}/{ticker}_overview.parquet", df_overview)
         time.sleep(2)  # aspetta 2 secondi
@@ -53,6 +62,7 @@ def main():
         # earnings
         raw_earnings = extract_earnings(ticker, config.API_KEY, config.BASE_URL)
         if is_valid_response(raw_earnings, "quarterlyEarnings"):
+            save_json(client, config.BUCKET_RAW, f"{config.PREFIX_EARNINGS}/{ticker}_earnings.json", raw_earnings)
             df_earnings = transform_earnings(raw_earnings, ticker)
             save_parquet(client, config.BUCKET_STAGING, f"{config.PREFIX_EARNINGS}/{ticker}_earnings.parquet", df_earnings)
         time.sleep(2)  # aspetta 2 secondi
